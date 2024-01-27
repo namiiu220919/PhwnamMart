@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, ScrollView, View, Text, Image, StyleSheet } from 'react-native';
+import { SafeAreaView, ScrollView, View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-elements';
 import CustomIcon from '../components/CustomIcon';
 import { COLORS } from '../theme/theme';
@@ -12,6 +12,12 @@ const ProductScreen = () => {
         <View style={styles.productContainer}>
           <ProductCard />
           <ProductCard2 />
+          <Text style={{padding:10, color:'black', backgroundColor:COLORS.primaryOrangeHex, borderRadius:10, fontWeight:'bold'}}>Tổng tiền: 10000đ</Text>
+
+          <View style={{alignItems:'center', marginTop:10}}>
+          <TouchableOpacity style={{width: 100, height: 40, justifyContent: 'center', alignItems: 'center', backgroundColor: '#E0DCDC', borderRadius: 5 }}><Text style={{ color: '#2F6BFF' }}>Thanh toán</Text></TouchableOpacity>
+
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>

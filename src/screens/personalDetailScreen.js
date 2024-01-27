@@ -16,8 +16,7 @@ const RegisterScreen = () => {
       
       <TextInput style={st.txtInput} placeholder='Nhập họ tên' />
       <TextInput style={st.txtInput} placeholder='Nhập địa chỉ Email' />
-      <TextInput style={st.txtInput} secureTextEntry={true} placeholder='Nhập mật khẩu' />
-      <TextInput style={st.txtInput} secureTextEntry={true} placeholder='Nhập lại mật khẩu' />
+      
       <TextInput style={st.txtInput} placeholder='Nhập số điện thoại' />
       <TextInput style={st.txtInput} placeholder='Nhập địa chỉ' />
       <TouchableOpacity style={st.button}>

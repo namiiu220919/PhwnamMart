@@ -1,0 +1,11 @@
+{
+    "posts":[
+        {"id":1,"title":"Bài thực hành JSON"},
+        {"id":2,"title":"Bài tập JS"}
+    ],
+    "comments":[
+        {"id":1,"body":"Bài này ok", "postId":1},
+        {"id":2,"body":"Bình luận 2", "postId":1},
+        {"id":3,"body":"Bình luận 2", "postId":2}
+    ]
+}

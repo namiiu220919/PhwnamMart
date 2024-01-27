@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View, StyleSheet, TextInput, ImageBackground } from 'react-native';
 import CustomIcon from '../components/CustomIcon';
 import { COLORS } from '../theme/theme';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 const ProductView = ({ imageSource, productName, productNum, productPrice, productReview }) => (
     <TouchableOpacity style={styles.productView}>
         <Image source={imageSource} style={styles.image} />
@@ -9,7 +10,7 @@ const ProductView = ({ imageSource, productName, productNum, productPrice, produ
         <Text style={styles.productNum}>{productNum}</Text>
         <Text style={styles.productPrice}>{productPrice}</Text>
         <CustomIcon style={{ flex: 1, position: 'absolute', margin: 10 }} name='like' size={25} />
-        <TouchableOpacity style={{ height: 25, justifyContent: 'center', alignItems: 'center', backgroundColor: '#E0DCDC', borderRadius: 5 }}><Text style={{ color: '#2F6BFF' }}>Thêm</Text></TouchableOpacity>
+        <TouchableOpacity style={{ height: 25, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.primaryOrangeHex, borderRadius: 5 }}><Text style={{ color: 'black' }}>Thêm</Text></TouchableOpacity>
     </TouchableOpacity>
 );
 

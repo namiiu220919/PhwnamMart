@@ -1,0 +1,21 @@
+{
+    "users":[
+
+    ],
+    "products":[
+        {"id":1,"name":"Bạch Tuộc","dvi":"kg","price":"$17"},
+        {"id":2,"name":"Cá Diêu","dvi":"kg","price":"$30"},
+        {"id":3,"name":"Cá Hồi","dvi":"kg","price":"$17"},
+        {"id":4,"name":"Lươn","dvi":"kg","price":"$17"},
+        {"id":5,"name":"Ba Chỉ Bò","dvi":"kg","price":"$17"}
+    ],
+    "carts":[
+
+    ],
+    "orders":[
+
+    ],
+    "contacts":[
+
+    ]
+}
