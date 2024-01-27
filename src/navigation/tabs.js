@@ -19,7 +19,7 @@ const Tabs = () => {
         screenOptions={{
           tabBarHideOnKeyboard:true,
             headerShown: false,
-            tabBarShowLabel:true,
+            tabBarShowLabel:false,
             tabBarStyle: st.tarBarStyle,
             tabBarBackground: ()=>{
               <BlurView 
@@ -29,26 +29,6 @@ const Tabs = () => {
               />
             },        
         }}>
-        <Tab.Screen name='Đăng nhập' component={LoginScreen} options={{
-            tabBarIcon:({focused, color, size})=>(
-              <CustomIcon 
-                name='home'
-                size={25}
-                color={focused ? COLORS.primaryOrangeHex: COLORS.primaryLightGreyHex
-                }
-              />
-            ),
-          }}/> 
-        <Tab.Screen name='Đăng ký' component={RegisterScreen} options={{
-            tabBarIcon:({focused, color, size})=>(
-              <CustomIcon 
-                name='home'
-                size={25}
-                color={focused ? COLORS.primaryOrangeHex: COLORS.primaryLightGreyHex
-                }
-              />
-            ),
-          }}/>
         <Tab.Screen 
           name='Trang chủ' 
           component={HomeScreen}

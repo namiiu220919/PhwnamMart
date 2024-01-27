@@ -2,7 +2,8 @@ import { Button,TouchableOpacity, StyleSheet, Text, TextInput, View, Image, Stat
 import React, {useState} from 'react';
 import { COLORS } from '../theme/theme';
 
-const LoginScreen = () => {
+
+const LoginScreen = ({navigation}) => {
   return (
     <View style={st.container}>
       <StatusBar barStyle="light-content"/>
@@ -14,7 +15,7 @@ const LoginScreen = () => {
       <Text style={{textAlign:'center',fontSize: 12, marginBottom: 20}}>Đăng nhập để tiếp tục</Text>
       <TextInput style={st.txtInput} placeholder='Địa chỉ Email'></TextInput>
       <TextInput style={st.txtInput} secureTextEntry={true} placeholder='Mật khẩu'></TextInput>
-      <TouchableOpacity style={st.button}>
+      <TouchableOpacity style={st.button} onPress={() => navigation.navigate('Home1')}>
         <Text style={st.buttonText}>Đăng nhập</Text>
       </TouchableOpacity>
       <TouchableOpacity style={st.button1}>

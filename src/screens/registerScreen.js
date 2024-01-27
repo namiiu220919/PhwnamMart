@@ -4,7 +4,7 @@ import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS } from '../theme/theme';
 
-const RegisterScreen = () => {
+const RegisterScreen = ({navigation}) => {
   return (
     <GestureHandlerRootView style={{flex:1}}>
       <ScrollView style={{backgroundColor:'white'}}>
@@ -29,7 +29,7 @@ const RegisterScreen = () => {
           <Text style={{color: '#828282', fontWeight: 'bold', fontSize: 12}}>
             Đã có tài khoản?
           </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <Text style={{color: COLORS.primaryOrangeHex, fontWeight: 'bold', fontSize: 12}}> Đăng nhập</Text>
           </TouchableOpacity>
         </View>
