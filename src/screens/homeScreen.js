@@ -1,24 +1,158 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View, StyleSheet, TextInput, ImageBackground } from 'react-native';
 import CustomIcon from '../components/CustomIcon';
 import { COLORS } from '../theme/theme';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-const ProductView = ({ imageSource, productName, productNum, productPrice, productReview }) => (
-    <TouchableOpacity style={styles.productView}>
-        <Image source={imageSource} style={styles.image} />
-        <Text style={styles.productName}>{productName}</Text>
-        <Text style={styles.productNum}>{productNum}</Text>
-        <Text style={styles.productPrice}>{productPrice}</Text>
-        <CustomIcon style={{ flex: 1, position: 'absolute', margin: 10 }} name='like' size={25} />
-        <TouchableOpacity style={{ height: 25, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.primaryOrangeHex, borderRadius: 5 }}><Text style={{ color: 'black' }}>Thêm</Text></TouchableOpacity>
-    </TouchableOpacity>
-);
+import { FlatList } from 'react-native-gesture-handler';
 
 
 
-const RandomProduct = () => (
+    
+// const ProductView = ({ imageSource, productName, productNum, productPrice, productReview }) => (
+//     <TouchableOpacity style={styles.productView}>
+//         <Image source={imageSource} style={styles.image} />
+//         <Text style={styles.productName}>{productName}</Text>
+//         <Text style={styles.productNum}>{productNum}</Text>
+//         <Text style={styles.productPrice}>{productPrice}</Text>
+//         <CustomIcon style={{ flex: 1, position: 'absolute', margin: 10 }} name='like' size={25} />
+//         <TouchableOpacity style={{ height: 25, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.primaryOrangeHex, borderRadius: 5 }}><Text style={{ color: 'black' }}>Thêm</Text></TouchableOpacity>
+//     </TouchableOpacity>
+// );
+
+
+
+const RandomProduct = () => {
+    const [dataThit, setData] = useState([
+        {
+            id:1,
+            name:'Thịt bò Úc xay',
+            num:'0.5kg',
+            price: 17.02,
+            review: 4.2,
+            image: 'https://hcm.fstorage.vn/images/2022/8936150841113_7bc1837c-aa53-4a4d-a62c-28bed51c0e98-og.jpg'
+        },
+        {
+            id:2,
+            name:'Thịt Ba Rọi',
+            num:'1kg',
+            price: 30.02,
+            review: 4.7,
+            image: 'https://hcm.fstorage.vn/images/2022/thit-ba-roi-co-da.jpg'
+        },
+        {
+            id:3,
+            name:'Thịt bò Bít Tết',
+            num:'1.5kg',
+            price: 17.02,
+            review: 4.9,
+            image: 'https://hcm.fstorage.vn/images/2022/thit-bo-bit-tet-fuji-goi-200g_b5ce6529-6cff-4589-9134-9a06f4754410-og.jpg'
+        },
+        {
+            id:4,
+            name:'Bò Canada',
+            num:'1kg',
+            price: 17.02,
+            review: 4.5,
+            image: 'https://hcm.fstorage.vn/images/2023/04/8934954012050-20230428083019.png'
+        },
+        {
+            id:5,
+            name:'Thịt ba chỉ bò',
+            num:'1kg',
+            price: 30.02,
+            review: 5,
+            image: 'https://hcm.fstorage.vn/images/2022/ba-chi-bo-my-cat-lat-dong-lanh-tps-khay-500g_40bdfd3e-abcb-4693-b412-9cf3c3ffb3ea-og.jpg'
+        },
+    ]);
+
+    const [dataHaiSan, setDataHaiSan] = useState([
+        {
+            id:6,
+            name:'Tôm thịt',
+            num:'0.5kg',
+            price: 17.02,
+            review: 4.2,
+            image: 'https://hcm.fstorage.vn/images/2022/40-khay-450g-20221007080806-og.jpg'
+        },
+        {
+            id:7,
+            name:'Bạch Tuộc',
+            num:'1kg',
+            price: 30.02,
+            review: 4.7,
+            image: 'https://hcm.fstorage.vn/images/2022/9538873065502-og.jpg'
+        },
+        {
+            id:8,
+            name:'Ngao',
+            num:'1.5kg',
+            price: 17.02,
+            review: 4.9,
+            image: 'https://hcm.fstorage.vn/images/2022/162428239615010053467-hop-sua-bap-non-lif-loc-4-hop-x-180ml-og.jpg'
+        },
+        {
+            id:9,
+            name:'Lươn',
+            num:'1kg',
+            price: 17.02,
+            review: 4.5,
+            image: 'https://hcm.fstorage.vn/images/2022/luon-lam-sach_8abc26a4-8da6-4b4c-a6cd-29f94ed605fd-og.jpg'
+        },
+        {
+            id:10,
+            name:'Cá rô phi lê',
+            num:'1kg',
+            price: 30.02,
+            review: 5,
+            image: 'https://hcm.fstorage.vn/images/2022/9642722426910-og.jpg'
+        },
+    ]);
+
+    const [dataRau, setDataRau] = useState([
+        {
+            id:11,
+            name:'Xà lách',
+            num:'0.5kg',
+            price: 17.02,
+            review: 4.2,
+            image: 'https://hcm.fstorage.vn/images/2023/02/xa-lach-mo-wineco-300g.jpg'
+        },
+        {
+            id:12,
+            name:'Hành Paro',
+            num:'1kg',
+            price: 30.02,
+            review: 4.7,
+            image: 'https://hcm.fstorage.vn/images/2023/02/hanh-paro-wineco-300g.jpg'
+        },
+        {
+            id:13,
+            name:'Cải xanh',
+            num:'1.5kg',
+            price: 17.02,
+            review: 4.9,
+            image: 'https://hcm.fstorage.vn/images/2023/02/cai-xanh-baby-wineco-300g.jpg'
+        },
+        {
+            id:14,
+            name:'Cà rốt',
+            num:'1kg',
+            price: 17.02,
+            review: 4.5,
+            image: 'https://hcm.fstorage.vn/images/2023/07/ca-rot-20230721084932.png'
+        },
+        {
+            id:15,
+            name:'Bí đỏ',
+            num:'1kg',
+            price: 30.02,
+            review: 5,
+            image: 'https://hcm.fstorage.vn/images/2023/02/bi-do-tron.jpeg'
+        },
+    ]);
+
+    return(
     <SafeAreaView style={styles.container}>
-        
         <ScrollView showsVerticalScrollIndicator={false}>
         <CustomIcon style={{ flex: 1, position: 'relative', margin: 10 }} name='menu' color={COLORS.primaryOrangeHex} size={25} />
 
@@ -29,7 +163,6 @@ const RandomProduct = () => (
                 <TextInput
                     style={styles.input}
                     placeholder="Tìm kiếm..."
-
                 />
             </TouchableOpacity>
             <ScrollView style={{ marginTop: 10,marginBottom: 10 }} horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -40,40 +173,80 @@ const RandomProduct = () => (
                 <Text style={{marginLeft:15, marginRight:15}}>Gia vị</Text>
 
             </ScrollView>
+            {/* <Text style={{ margin: 5, fontSize: 20 }}>Thịt</Text>
+            <ScrollView style={{ marginBottom: 30 }} horizontal={true} showsHorizontalScrollIndicator={false}>
+                <ProductView imageSource={require('../img/BachTuoc.jpg')} productName="Bạch Tuộc" productNum="1kg" productPrice="$17.02" productReview="4.6" />
+                <ProductView imageSource={require('../img/CaDieu.jpg')} productName="Cá Diêu" productNum="1kg" productPrice="$30.02" productReview="4.3" />
+                <ProductView imageSource={require('../img/CaHoi.jpg')} productName="Cá Hồi" productNum="1.5kg" productPrice="$17.02" productReview="4.6" />
+                <ProductView imageSource={require('../img/Luon.jpg')} productName="Lươn" productNum="1kg" productPrice="$17.02" productReview="3.6" />
+                <ProductView imageSource={require('../img/ThitBaChiBo.jpg')} productName="Thịt ba chỉ bò" productNum="1kg" productPrice="$30.02" productReview="1.6" />
+                <ProductView imageSource={require('../img/BachTuoc.jpg')} productName="Bạch Tuộc" productNum="1.5kg" productPrice="$17.02" productReview="4.6" />
+            </ScrollView> */}
             <Text style={{ margin: 5, fontSize: 20 }}>Thịt</Text>
-            <ScrollView style={{ marginBottom: 30 }} horizontal={true} showsHorizontalScrollIndicator={false}>
-                <ProductView imageSource={require('../img/BachTuoc.jpg')} productName="Bạch Tuộc" productNum="1kg" productPrice="$17.02" productReview="4.6" />
-                <ProductView imageSource={require('../img/CaDieu.jpg')} productName="Cá Diêu" productNum="1kg" productPrice="$30.02" productReview="4.3" />
-                <ProductView imageSource={require('../img/CaHoi.jpg')} productName="Cá Hồi" productNum="1.5kg" productPrice="$17.02" productReview="4.6" />
-                <ProductView imageSource={require('../img/Luon.jpg')} productName="Lươn" productNum="1kg" productPrice="$17.02" productReview="3.6" />
-                <ProductView imageSource={require('../img/ThitBaChiBo.jpg')} productName="Thịt ba chỉ bò" productNum="1kg" productPrice="$30.02" productReview="1.6" />
-                <ProductView imageSource={require('../img/BachTuoc.jpg')} productName="Bạch Tuộc" productNum="1.5kg" productPrice="$17.02" productReview="4.6" />
-                {/* Thêm các sản phẩm khác nếu cần */}
-            </ScrollView>
+            <FlatList
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                data={dataThit}
+                renderItem={({item}) => {
+                    return(
+                        <TouchableOpacity style={styles.productView}>
+                            <Image source={{uri: item.image}} style={styles.image} />
+                            <Text style={styles.productName}>{item.name}</Text>
+                            <Text style={styles.productNum}>{item.num}</Text>
+                            <Text style={styles.productPrice}>{item.price}đ</Text>
+                            <CustomIcon style={{ flex: 1, position: 'absolute', margin: 10 }} name='like' size={25} color={'#f1eff2'}/>
+                            <TouchableOpacity style={{ marginTop:10,height: 25, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.primaryOrangeHex, borderRadius: 5 }}><Text style={{ color: 'black' }}>Thêm</Text></TouchableOpacity>
+                        </TouchableOpacity>
+                    )
+                }}
+                keyExtractor={item => item.id}
+            />
+
+            <Text style={{ margin: 5, fontSize: 20 }}>Thuỷ hải sản</Text>
+            <FlatList
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                data={dataHaiSan}
+                renderItem={({item}) => {
+                    return(
+                        <TouchableOpacity style={styles.productView}>
+                            <Image source={{uri: item.image}} style={styles.image} />
+                            <Text style={styles.productName}>{item.name}</Text>
+                            <Text style={styles.productNum}>{item.num}</Text>
+                            <Text style={styles.productPrice}>{item.price}đ</Text>
+                            <CustomIcon style={{ flex: 1, position: 'absolute', margin: 10 }} name='like' size={25} color={'#f1eff2'}/>
+                            <TouchableOpacity style={{ marginTop:10,height: 25, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.primaryOrangeHex, borderRadius: 5 }}><Text style={{ color: 'black' }}>Thêm</Text></TouchableOpacity>
+                        </TouchableOpacity>
+                    )
+                }}
+                keyExtractor={item => item.id}
+            />
+
             <Text style={{ margin: 5, fontSize: 20 }}>Rau củ</Text>
-            <ScrollView style={{ marginBottom: 30 }} horizontal={true} showsHorizontalScrollIndicator={false}>
-                <ProductView imageSource={require('../img/BachTuoc.jpg')} productName="Bạch Tuộc" productNum="1kg" productPrice="$17.02" productReview="4.6" />
-                <ProductView imageSource={require('../img/CaDieu.jpg')} productName="Cá Diêu" productNum="1kg" productPrice="$30.02" productReview="4.3" />
-                <ProductView imageSource={require('../img/CaHoi.jpg')} productName="Cá Hồi" productNum="1.5kg" productPrice="$17.02" productReview="4.6" />
-                <ProductView imageSource={require('../img/Luon.jpg')} productName="Lươn" productNum="1kg" productPrice="$17.02" productReview="3.6" />
-                <ProductView imageSource={require('../img/ThitBaChiBo.jpg')} productName="Thịt ba chỉ bò" productNum="1kg" productPrice="$30.02" productReview="1.6" />
-                <ProductView imageSource={require('../img/BachTuoc.jpg')} productName="Bạch Tuộc" productNum="1.5kg" productPrice="$17.02" productReview="4.6" />
-                {/* Thêm các sản phẩm khác nếu cần */}
-            </ScrollView>
-            <Text style={{ margin: 5, fontSize: 20 }}>Gia vị</Text>
-            <ScrollView style={{ marginBottom: 30 }} horizontal={true} showsHorizontalScrollIndicator={false}>
-                <ProductView imageSource={require('../img/BachTuoc.jpg')} productName="Bạch Tuộc" productNum="1kg" productPrice="$17.02" productReview="4.6" />
-                <ProductView imageSource={require('../img/CaDieu.jpg')} productName="Cá Diêu" productNum="1kg" productPrice="$30.02" productReview="4.3" />
-                <ProductView imageSource={require('../img/CaHoi.jpg')} productName="Cá Hồi" productNum="1.5kg" productPrice="$17.02" productReview="4.6" />
-                <ProductView imageSource={require('../img/Luon.jpg')} productName="Lươn" productNum="1kg" productPrice="$17.02" productReview="3.6" />
-                <ProductView imageSource={require('../img/ThitBaChiBo.jpg')} productName="Thịt ba chỉ bò" productNum="1kg" productPrice="$30.02" productReview="1.6" />
-                <ProductView imageSource={require('../img/BachTuoc.jpg')} productName="Bạch Tuộc" productNum="1.5kg" productPrice="$17.02" productReview="4.6" />
-                {/* Thêm các sản phẩm khác nếu cần */}
-            </ScrollView>
+            <FlatList
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                data={dataRau}
+                renderItem={({item}) => {
+                    return(
+                        <TouchableOpacity style={styles.productView}>
+                            <Image source={{uri: item.image}} style={styles.image} />
+                            <Text style={styles.productName}>{item.name}</Text>
+                            <Text style={styles.productNum}>{item.num}</Text>
+                            <Text style={styles.productPrice}>{item.price}đ</Text>
+                            <CustomIcon style={{ flex: 1, position: 'absolute', margin: 10 }} name='like' size={25} color={'#f1eff2'}/>
+                            <TouchableOpacity style={{ marginTop:10,height: 25, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.primaryOrangeHex, borderRadius: 5 }}><Text style={{ color: 'black' }}>Thêm</Text></TouchableOpacity>
+                        </TouchableOpacity>
+                    )
+                }}
+                keyExtractor={item => item.id}
+            />
+            
 
         </ScrollView>
     </SafeAreaView>
-);
+    )
+            };
 
 const styles = StyleSheet.create({
     productView: {
@@ -85,22 +258,21 @@ const styles = StyleSheet.create({
         marginLeft: 5,
         marginRight: 5,
         height: 220,
+        elevation: 2,
     },
     image: {
-        width: 103,
+        width: 100,
         height: 98,
         borderRadius: 24,
     },
     productName: {
         fontWeight: 'bold',
-        fontSize: 18,
     },
     productNum: {
         color: '#a7a7a7',
     },
     productPrice: {
         fontWeight: 'bold',
-        fontSize: 18,
         color: '#4EC581',
     },
     star: {
