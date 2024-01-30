@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react';
-import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View, StyleSheet, TextInput, ImageBackground } from 'react-native';
+import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View, StyleSheet, TextInput, ImageBackground, ActivityIndicator } from 'react-native';
 import CustomIcon from '../components/CustomIcon';
 import { COLORS } from '../theme/theme';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
@@ -21,7 +21,29 @@ import { FlatList } from 'react-native-gesture-handler';
 
 
 
-const RandomProduct = () => {
+const RandomProduct = (props) => {
+
+    const [isLoading, setIsLoading] = useState(true);
+    const [dssp, setDssp] = useState([]);
+
+    const getListSp = async () => {
+        let url_api ='http://192.168.0.109:3000/products';
+
+        try{
+            const response = await fetch(url_api);//load dlieu
+            const json = await response.json(); //chuyển dlieu -> json
+
+            setDssp(json);//đổ dl
+        }catch(error){
+            console.error(error);
+        }finally{
+            //kết thúc load dl
+            setIsLoading(false);
+        }
+    }
+
+
+
     const [dataThit, setData] = useState([
         {
             id:1,
@@ -151,6 +173,15 @@ const RandomProduct = () => {
         },
     ]);
 
+
+    React.useEffect(() => {
+        const unsubscribe = props.navigation.addListener('focus', () => {
+          //cập nhật gd ở đây
+          getListSp();
+        });
+        return unsubscribe;
+      }, [props.navigation]);
+
     return(
     <SafeAreaView style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -183,24 +214,30 @@ const RandomProduct = () => {
                 <ProductView imageSource={require('../img/BachTuoc.jpg')} productName="Bạch Tuộc" productNum="1.5kg" productPrice="$17.02" productReview="4.6" />
             </ScrollView> */}
             <Text style={{ margin: 5, fontSize: 20 }}>Thịt</Text>
-            <FlatList
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                data={dataThit}
-                renderItem={({item}) => {
-                    return(
-                        <TouchableOpacity style={styles.productView}>
-                            <Image source={{uri: item.image}} style={styles.image} />
-                            <Text style={styles.productName}>{item.name}</Text>
-                            <Text style={styles.productNum}>{item.num}</Text>
-                            <Text style={styles.productPrice}>{item.price}đ</Text>
-                            <CustomIcon style={{ flex: 1, position: 'absolute', margin: 10 }} name='like' size={25} color={'#f1eff2'}/>
-                            <TouchableOpacity style={{ marginTop:10,height: 25, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.primaryOrangeHex, borderRadius: 5 }}><Text style={{ color: 'black' }}>Thêm</Text></TouchableOpacity>
-                        </TouchableOpacity>
-                    )
-                }}
-                keyExtractor={item => item.id}
-            />
+            {
+                (isLoading) ? (
+                    <ActivityIndicator/>
+                ) : (
+                    <FlatList
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        data={dssp}
+                        keyExtractor={item => item.id}
+                        renderItem={({item}) => {
+                            return(
+                                <TouchableOpacity style={styles.productView}>
+                                    <Image source={{uri: item.image}} style={styles.image} />
+                                    <Text style={styles.productName}>{item.name}</Text>
+                                    <Text style={styles.productNum}>{item.num}</Text>
+                                    <Text style={styles.productPrice}>{item.price}đ</Text>
+                                    <CustomIcon style={{ flex: 1, position: 'absolute', margin: 10 }} name='like' size={25} color={'#f1eff2'}/>
+                                    <TouchableOpacity style={{ marginTop:10,height: 25, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.primaryOrangeHex, borderRadius: 5 }}><Text style={{ color: 'black' }}>Thêm</Text></TouchableOpacity>
+                                </TouchableOpacity>
+                            )
+                        }}
+                    />
+                )
+            }
 
             <Text style={{ margin: 5, fontSize: 20 }}>Thuỷ hải sản</Text>
             <FlatList

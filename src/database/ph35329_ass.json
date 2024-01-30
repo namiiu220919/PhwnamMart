@@ -3,11 +3,54 @@
 
     ],
     "products":[
-        {"id":1,"name":"Bạch Tuộc","dvi":"kg","price":"$17"},
-        {"id":2,"name":"Cá Diêu","dvi":"kg","price":"$30"},
-        {"id":3,"name":"Cá Hồi","dvi":"kg","price":"$17"},
-        {"id":4,"name":"Lươn","dvi":"kg","price":"$17"},
-        {"id":5,"name":"Ba Chỉ Bò","dvi":"kg","price":"$17"}
+        {
+            "id":1,
+            "name":"Thịt bò Úc xay",
+            "num":"0.5kg",
+            "price": 17.02,
+            "review": 4.2,
+            "type":"meat",
+            "image": "https://hcm.fstorage.vn/images/2022/8936150841113_7bc1837c-aa53-4a4d-a62c-28bed51c0e98-og.jpg"
+        },
+        {
+            "id":2,
+            "name":"Thịt Ba Rọi",
+            "num":"1kg",
+            "price": 30.02,
+            "review": 4.7,
+            "type":"meat",
+            "image": "https://hcm.fstorage.vn/images/2022/thit-ba-roi-co-da.jpg"
+        },
+        {
+            "id":3,
+            "name":"Thịt bò Bít Tết",
+            "num":"1.5kg",
+            "price": 17.02,
+            "review": 4.9,
+            "type":"meat",
+            "image": "https://hcm.fstorage.vn/images/2022/thit-bo-bit-tet-fuji-goi-200g_b5ce6529-6cff-4589-9134-9a06f4754410-og.jpg"
+        },
+        {
+            "id":4,
+            "name":"Bò Canada",
+            "num":"1kg",
+            "price": 17.02,
+            "review": 4.5,
+            "type":"meat",
+            "image": "https://hcm.fstorage.vn/images/2023/04/8934954012050-20230428083019.png"
+        },
+        {
+            "id":5,
+            "name":"Thịt ba chỉ bò",
+            "num":"1kg",
+            "price": 30.02,
+            "review": 5,
+            "type":"meat",
+            "image": "https://hcm.fstorage.vn/images/2022/ba-chi-bo-my-cat-lat-dong-lanh-tps-khay-500g_40bdfd3e-abcb-4693-b412-9cf3c3ffb3ea-og.jpg"
+        }
+
+
+    
     ],
     "carts":[
 
