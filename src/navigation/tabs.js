@@ -72,16 +72,7 @@ const Tabs = () => {
               />
             ),
           }}/>
-          <Tab.Screen name='Liên hệ'component={PersonalDetailScreen} options={{
-            tabBarIcon:({focused, color, size})=>(
-              <CustomIcon 
-                name='home'
-                size={25}
-                color={focused ? COLORS.primaryOrangeHex: COLORS.primaryLightGreyHex
-                }
-              />
-            ),
-          }}/>
+          
 
       </Tab.Navigator>
   );

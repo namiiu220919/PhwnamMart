@@ -1,12 +1,11 @@
-import { Button,TouchableOpacity, StyleSheet, Text, TextInput, View, Image } from 'react-native'
+import { Button,TouchableOpacity, StyleSheet, Text, TextInput, View, Image,ScrollView } from 'react-native'
 import React, {useState} from 'react';
-import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS } from '../theme/theme';
 
 const RegisterScreen = ({navigation}) => {
   return (
-    <GestureHandlerRootView style={{flex:1}}>
+    <SafeAreaView style={{flex:1}}>
       <ScrollView style={{backgroundColor:'white'}}>
         <Image
         style={{ width: 200, alignSelf: 'center' }}
@@ -35,7 +34,7 @@ const RegisterScreen = ({navigation}) => {
         </View>
       
     </ScrollView>
-    </GestureHandlerRootView>
+    </SafeAreaView>
   )
 }
 

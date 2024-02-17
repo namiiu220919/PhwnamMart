@@ -1,23 +1,7 @@
 import { StyleSheet,  } from 'react-native'
 import React from 'react'
 import { NavigationContainer, } from '@react-navigation/native'
-import { createStackNavigator } from '@react-navigation/stack';
-import LoginScreen from './src/screens/loginScreen';
-import RegisterScreen from './src/screens/registerScreen';
-import TransScreen from './src/screens/transScreen';
-
-const Stack = createStackNavigator();
-
-function StackNav() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen name="Login" component={LoginScreen} options={{headerShown:false}} />
-      <Stack.Screen name="Register" component={RegisterScreen} options={{headerShown:false}} />
-      <Stack.Screen name="Home1" component={TransScreen} options={{headerShown:false}} />
-
-    </Stack.Navigator>
-  );
-}
+import StackNav from './src/navigation/stack';
 
 const App = () => {
   return (

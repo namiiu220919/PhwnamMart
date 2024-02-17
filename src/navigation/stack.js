@@ -3,15 +3,25 @@ import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from '../screens/loginScreen';
 import RegisterScreen from '../screens/registerScreen';
+import MyDrawer from './MyDrawer';
+import SplashScreen from '../screens/splashScreen';
+import Tabs from './tabs';
+import MenuScreen from '../screens/menuScreen';
+import PersonalScreen from '../screens/personalDetailScreen';
 
 
 const Stack = createStackNavigator();
 
-function StackNav() {
+const StackNav = () => {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Register" component={RegisterScreen} />
+    <Stack.Navigator initialRouteName="Splash">
+      <Stack.Screen name="Splash" component={SplashScreen} options={{headerShown:false}}/>
+      <Stack.Screen name="Login" component={LoginScreen} options={{headerShown:false}}/>
+      <Stack.Screen name="Register" component={RegisterScreen} options={{headerShown:false}}/>
+      <Stack.Screen name="Home1" component={Tabs} options={{headerShown:false}}/>
+      <Stack.Screen name="Menu" component={MenuScreen} options={{headerShown:false}}/>
+      <Stack.Screen name="Person" component={PersonalScreen} options={{headerShown:false}}/>
+      {/* <Stack.Screen name="Tab" component={Tabs} options={{headerShown:false}}/> */}
     </Stack.Navigator>
   );
 }

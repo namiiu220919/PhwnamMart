@@ -1,9 +1,51 @@
-import { Button,TouchableOpacity, StyleSheet, Text, TextInput, View, Image, StatusBar } from 'react-native'
+import { Button,TouchableOpacity, StyleSheet, Text, TextInput, View, Image, StatusBar, Alert } from 'react-native'
 import React, {useState} from 'react';
 import { COLORS } from '../theme/theme';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 //hehehehehehe
 
 const LoginScreen = ({navigation}) => {
+
+  const [username, setusername] = useState("");
+  const [password, setpassword] = useState("");
+  const doLogin = async () => {
+    // kiểm tra hợp lệ dữ liệu
+    if (username.length == 0) {
+      alert("Chưa nhập Username");
+      return;
+    }
+    if (password.length == 0) {
+      alert("Chưa nhập Password");
+      return;
+    }
+  
+    // thực hiên fetch để lấy dữ liệu về
+    let url_check_login = "https://65d02e84ab7beba3d5e2daa0.mockapi.io/users?username=" + username;
+  
+    try {
+      const response = await fetch(url_check_login);
+      const res_login = await response.json();
+  
+      if (res_login.length != 1) {
+        alert("Kiểm tra lại username");
+        return;
+      } else {
+        // số lượng lấy được 1 bản ghi ==> kiểm tra password
+        let objU = res_login[0];
+        if (objU.password != password) {
+          alert("Sai password");
+          return;
+        } else {
+          // đúng password: lưu thông tin vào storage
+          await AsyncStorage.setItem('loginInfo', JSON.stringify(objU));
+          navigation.navigate('Home1');
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <View style={st.container}>
       <StatusBar barStyle="light-content"/>
@@ -13,9 +55,9 @@ const LoginScreen = ({navigation}) => {
       />
       <Text style={st.welcome}>Kính chào quý khách !</Text>
       <Text style={{textAlign:'center',fontSize: 12, marginBottom: 20}}>Đăng nhập để tiếp tục</Text>
-      <TextInput style={st.txtInput} placeholder='Địa chỉ Email'></TextInput>
-      <TextInput style={st.txtInput} secureTextEntry={true} placeholder='Mật khẩu'></TextInput>
-      <TouchableOpacity style={st.button} onPress={() => navigation.navigate('Home1')}>
+      <TextInput style={st.txtInput} placeholder='Tên đăng nhập' onChangeText={(txt) => {setusername(txt)}}></TextInput>
+      <TextInput style={st.txtInput} secureTextEntry={true} placeholder='Mật khẩu' onChangeText={(txt) => {setpassword(txt)}}></TextInput>
+      <TouchableOpacity style={st.button} onPress={doLogin}>
         <Text style={st.buttonText}>Đăng nhập</Text>
       </TouchableOpacity>
       <TouchableOpacity style={st.button1}>

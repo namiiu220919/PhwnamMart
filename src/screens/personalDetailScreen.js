@@ -1,12 +1,16 @@
-import { Button,TouchableOpacity, StyleSheet, Text, TextInput, View, Image } from 'react-native'
+import { Button,TouchableOpacity, StyleSheet, Text, TextInput, View, Image, ScrollView } from 'react-native'
 import React, {useState} from 'react';
-import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import CustomIcon from '../components/CustomIcon';
 import { COLORS } from '../theme/theme';
-const RegisterScreen = () => {
+
+const PersonalScreen = ({navigation}) => {
   return (
-    <GestureHandlerRootView style={{flex:1}}>
+    <SafeAreaView style={{flex:1}}>
       <ScrollView style={{backgroundColor:'white'}}>
+      <TouchableOpacity onPress={() => navigation.navigate('Menu')}>
+            <CustomIcon style={{ flex: 1, position: 'relative', margin: 10 }} name='menu' color={COLORS.primaryOrangeHex} size={25} />
+        </TouchableOpacity>
       <Text style={{ flex: 1,fontWeight:'bold', textAlign:'center',margin:5,fontSize:25, color:COLORS.primaryOrangeHex}}>Thông tin</Text>
 
         <Image
@@ -24,11 +28,11 @@ const RegisterScreen = () => {
       </TouchableOpacity>
       
     </ScrollView>
-    </GestureHandlerRootView>
+    </SafeAreaView>
   )
 }
 
-export default RegisterScreen
+export default PersonalScreen
 
 const st = StyleSheet.create({
   container: {
