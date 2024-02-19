@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react';
-import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View, StyleSheet, TextInput, ImageBackground, ActivityIndicator, FlatList, Modal, Button } from 'react-native';
+import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View, StyleSheet, TextInput, ImageBackground, ActivityIndicator, FlatList, Modal, Button,ToastAndroid } from 'react-native';
 import CustomIcon from '../components/CustomIcon';
 import { COLORS } from '../theme/theme';
 
@@ -10,7 +10,7 @@ const HomeScreen = (props) => {
     const [meatList, setmeatList] = useState([]);
     const [fishList, setfishList] = useState([]);
     const [vegetaList, setvegetaList] = useState([]);
-    const [cartItems, setcartItems] = useState([]);
+
 
     //Tạo các state cho hiển thị chi tiết
 
@@ -21,6 +21,7 @@ const HomeScreen = (props) => {
     const [priceProd, setpriceProd] = useState('');
     const [description, setdescription] = useState('');
     const [quantity, setquantity] = useState('');
+    const [favor, setfavor] = useState('')
     const [modalVisible, setmodalVisible] = useState(false);
 
 
@@ -42,6 +43,80 @@ const HomeScreen = (props) => {
         }
     }
 
+    const dataState = (item) => {
+        //gán dữ liệu cho state
+        setidProd(item.id);
+        setimgProd(item.image);
+        setnameProd(item.name);
+        setdviProd(item.dvi);
+        setpriceProd(item.price);
+        setdescription(item.description);
+    };
+
+    // const addToCart = async () => {
+    //     const item = {
+    //         idProd: idProd,
+    //         image: imgProd,
+    //         name: nameProd,
+    //         price: priceProd,
+    //         dvi: dviProd,
+    //         quantity: 1
+    //         //'https://65baf1bfb4d53c066553b8a3.mockapi.io/carts'
+    //     };
+
+    //     fetch('https://65baf1bfb4d53c066553b8a3.mockapi.io/carts', {
+    //         method: 'POST',
+    //         headers: {
+    //             Accept: 'application/json',
+    //             'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify(item),
+    //     })
+    //         .then((res) => {
+    //             if (res.status == 201)
+    //                 // console.log('Thêm thành công'); 
+    //                 console.log(item);
+    //         })
+    //         .catch((ex) => {
+    //             console.log(ex);
+    //         });
+
+    // };
+    const addToFavor = async () => {
+        const url = `https://65baf1bfb4d53c066553b8a3.mockapi.io/products/`; // Đường dẫn đến sản phẩm cụ thể
+        const requestBody = {
+            id: idProd,
+            favourite: true // Sử dụng boolean true thay vì chuỗi 'true'
+        };
+        
+        try {
+            // Gửi yêu cầu cập nhật trạng thái yêu thích của sản phẩm
+            const response = await fetch(url, {
+                method: 'PUT', // Hoặc có thể sử dụng 'PATCH' nếu chỉ muốn cập nhật một phần của dữ liệu
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody),
+            });
+    
+            if (response.ok) {
+                console.log('Sửa dữ liệu thành công');
+                // Hiển thị thông báo cho người dùng
+                ToastAndroid.show('Đã sửa dữ liệu thành công', ToastAndroid.SHORT);
+            } else {
+                console.error('Lỗi khi sửa dữ liệu:', response.statusText);
+                // Hiển thị thông báo lỗi cho người dùng nếu có lỗi xảy ra
+                ToastAndroid.show('Đã xảy ra lỗi khi sửa dữ liệu', ToastAndroid.SHORT);
+            }
+        } catch (error) {
+            console.error('Lỗi khi sửa dữ liệu:', error);
+            // Hiển thị thông báo lỗi cho người dùng nếu có lỗi xảy ra
+            ToastAndroid.show('Đã xảy ra lỗi khi sửa dữ liệu', ToastAndroid.SHORT);
+        }
+    };
+    
+
     const addToCart = async () => {
         const item = {
             idProd: idProd,
@@ -50,25 +125,47 @@ const HomeScreen = (props) => {
             price: priceProd,
             dvi: dviProd,
             quantity: 1
-            //'https://65baf1bfb4d53c066553b8a3.mockapi.io/carts'
         };
-        fetch('https://65baf1bfb4d53c066553b8a3.mockapi.io/carts', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(item),
-        })
-        .then ((res)=>{
-            if(res.status ==201)
-            console.log('Thêm thành công'); 
-        })
-        .catch((ex)=>{
-            console.log(ex);
-        });
 
+        try {
+            // Lấy danh sách các mục trong giỏ hàng
+            const response = await fetch('https://65baf1bfb4d53c066553b8a3.mockapi.io/carts');
+            const cartItems = await response.json();
+
+            // Kiểm tra xem sản phẩm đã tồn tại trong giỏ hàng chưa
+            const existingItem = cartItems.find(cartItem => cartItem.idProd === item.idProd);
+
+            if (existingItem) {
+                // Nếu sản phẩm đã tồn tại, tăng số lượng
+                existingItem.quantity++;
+                // Update số lượng trên server
+                await fetch(`https://65baf1bfb4d53c066553b8a3.mockapi.io/carts/${existingItem.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(existingItem),
+                });
+            } else {
+                // Nếu sản phẩm chưa tồn tại, thêm một mục mới
+                await fetch('https://65baf1bfb4d53c066553b8a3.mockapi.io/carts', {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(item),
+                });
+            }
+
+            console.log('Thêm thành công');
+            ToastAndroid.show('Đã thêm vào giỏ hàng', ToastAndroid.SHORT);
+        } catch (error) {
+            console.log(error);
+        }
     };
+
 
 
     React.useEffect(() => {
@@ -117,22 +214,25 @@ const HomeScreen = (props) => {
                             keyExtractor={item => item.id}
                             renderItem={({ item }) => {
                                 return (
+
                                     <TouchableOpacity style={styles.productView} onPress={() => {
+                                        dataState(item);
                                         //gán dữ liệu cho state
-                                        setidProd(item.id);
-                                        setimgProd(item.image);
-                                        setnameProd(item.name);
-                                        setdviProd(item.dvi);
-                                        setpriceProd(item.price);
-                                        setdescription(item.description);
-                                        setmodalVisible(true)
+                                        setmodalVisible(true);
                                     }}>
                                         <Image source={{ uri: item.image }} style={styles.image} />
                                         <Text style={styles.productName}>{item.name}</Text>
                                         <Text style={styles.productNum}>Đơn vị: {item.dvi}</Text>
                                         <Text style={styles.productPrice}>{item.price}đ</Text>
                                         <CustomIcon style={{ flex: 1, position: 'absolute', margin: 10 }} name='like' size={25} color={'#f1eff2'} />
-                                        <TouchableOpacity style={{ marginTop: 10, height: 25, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.primaryOrangeHex, borderRadius: 5 }} onPress={addToCart}><Text style={{ color: 'black' }}>Thêm</Text></TouchableOpacity>
+                                        <TouchableOpacity
+                                            style={{ marginTop: 10, height: 25, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.primaryOrangeHex, borderRadius: 5 }}
+                                            onPress={() => {
+                                                dataState(item);
+                                                setmodalVisible(true)
+                                            }}>
+                                            <Text style={{ color: 'black' }}>Thêm</Text>
+                                        </TouchableOpacity>
                                     </TouchableOpacity>
                                 )
                             }}
@@ -154,12 +254,7 @@ const HomeScreen = (props) => {
                                 return (
                                     <TouchableOpacity style={styles.productView} onPress={() => {
                                         //gán dữ liệu cho state
-                                        setidProd(item.id);
-                                        setimgProd(item.image);
-                                        setnameProd(item.name);
-                                        setdviProd(item.dvi);
-                                        setpriceProd(item.price);
-                                        setdescription(item.description);
+                                        dataState(item);
                                         setmodalVisible(true)
                                     }}>
                                         <Image source={{ uri: item.image }} style={styles.image} />
@@ -167,7 +262,14 @@ const HomeScreen = (props) => {
                                         <Text style={styles.productNum}>Đơn vị: {item.dvi}</Text>
                                         <Text style={styles.productPrice}>{item.price}đ</Text>
                                         <CustomIcon style={{ flex: 1, position: 'absolute', margin: 10 }} name='like' size={25} color={'#f1eff2'} />
-                                        <TouchableOpacity style={{ marginTop: 10, height: 25, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.primaryOrangeHex, borderRadius: 5 }}><Text style={{ color: 'black' }}>Thêm</Text></TouchableOpacity>
+                                        <TouchableOpacity
+                                            style={{ marginTop: 10, height: 25, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.primaryOrangeHex, borderRadius: 5 }}
+                                            onPress={() => {
+                                                dataState(item);
+                                                setmodalVisible(true)
+                                            }}>
+                                            <Text style={{ color: 'black' }}>Thêm</Text>
+                                        </TouchableOpacity>
                                     </TouchableOpacity>
                                 )
                             }}
@@ -189,12 +291,7 @@ const HomeScreen = (props) => {
                                 return (
                                     <TouchableOpacity style={styles.productView} onPress={() => {
                                         //gán dữ liệu cho state
-                                        setidProd(item.id);
-                                        setimgProd(item.image);
-                                        setnameProd(item.name);
-                                        setdviProd(item.dvi);
-                                        setpriceProd(item.price);
-                                        setdescription(item.description);
+                                        dataState(item);
                                         setmodalVisible(true)
                                     }}>
                                         <Image source={{ uri: item.image }} style={styles.image} />
@@ -202,7 +299,14 @@ const HomeScreen = (props) => {
                                         <Text style={styles.productNum}>Đơn vị: {item.dvi}</Text>
                                         <Text style={styles.productPrice}>{item.price}đ</Text>
                                         <CustomIcon style={{ flex: 1, position: 'absolute', margin: 10 }} name='like' size={25} color={'#f1eff2'} />
-                                        <TouchableOpacity style={{ marginTop: 10, height: 25, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.primaryOrangeHex, borderRadius: 5 }}><Text style={{ color: 'black' }}>Thêm</Text></TouchableOpacity>
+                                        <TouchableOpacity
+                                            style={{ marginTop: 10, height: 25, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.primaryOrangeHex, borderRadius: 5 }}
+                                            onPress={() => {
+                                                dataState(item);
+                                                setmodalVisible(true)
+                                            }}>
+                                            <Text style={{ color: 'black' }}>Thêm</Text>
+                                        </TouchableOpacity>
                                     </TouchableOpacity>
                                 )
                             }}
@@ -229,11 +333,16 @@ const HomeScreen = (props) => {
                                 <Image source={{ uri: imgProd }} style={{ width: '70%', height: 250 }} />
                             </View>
 
-                            <View style={{ flex: 3, marginTop: 30 }}>
-                                <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 16, marginTop: 5 }}>{nameProd}</Text>
-                                <Text style={{ marginTop: 5 }}>Đơn vị: {dviProd}</Text>
-                                <Text style={{ color: 'green', fontWeight: 'bold', fontSize: 19, marginTop: 5 }}>{priceProd} $</Text>
-                                <TouchableOpacity style={{ padding: 1, marginTop: 10, height: 35, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.primaryOrangeHex, borderRadius: 5 }}><Text style={{ color: 'black' }}>Thêm vào giỏ</Text></TouchableOpacity>
+                            <View style={{ flex: 3, marginTop: 20,  }}>
+                                <View style={{ backgroundColor: '#EFEDED', padding:10, borderRadius:5, }}>
+                                    <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 16, marginTop: 5 }}>{nameProd}</Text>
+                                    <Text style={{ marginTop: 5 }}>Đơn vị: {dviProd}</Text>
+                                    <Text style={{ color: 'green', fontWeight: 'bold', fontSize: 19, marginTop: 5 }}>{priceProd} $</Text>
+                                    <TouchableOpacity style={{flex:1, position: 'absolute', marginLeft:330, marginTop:15, zIndex:1 }} onPress={addToFavor}><CustomIcon name='like' size={29} color={'#dddddd'} /></TouchableOpacity>
+                                    <TouchableOpacity style={{ padding: 1, marginTop: 10, height: 35, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.primaryOrangeHex, borderRadius: 5 }}
+                                        onPress={addToCart}><Text style={{ color: 'black' }}>Thêm vào giỏ</Text>
+                                    </TouchableOpacity>
+                                </View>
                                 <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 16, marginTop: 15 }}>Thông tin sản phẩm:</Text>
                                 <Text style={{ fontSize: 16, marginTop: 15, lineHeight: 24 }}>{description}</Text>
                             </View>
@@ -256,6 +365,7 @@ const styles = StyleSheet.create({
         position: 'relative',
         marginLeft: 5,
         marginRight: 5,
+        marginBottom: 10,
         height: 220,
         elevation: 2,
     },
@@ -290,6 +400,7 @@ const styles = StyleSheet.create({
     },
     container: {
         margin: 10,
+        marginBottom: 80,
     },
     input: {
         height: 45,

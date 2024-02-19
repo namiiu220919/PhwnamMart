@@ -37,7 +37,7 @@ const Tabs = () => {
               <CustomIcon 
                 name='home'
                 size={25}
-                color={focused ? COLORS.primaryOrangeHex: COLORS.primaryLightGreyHex
+                color={focused ? COLORS.primaryOrangeHex: '#fffffd'
                 }
               />
             ),
@@ -47,7 +47,7 @@ const Tabs = () => {
               <CustomIcon 
                 name='cart'
                 size={25}
-                color={focused ? COLORS.primaryOrangeHex: COLORS.primaryLightGreyHex
+                color={focused ? COLORS.primaryOrangeHex: '#fffffd'
                 }
               />
             ),
@@ -57,7 +57,7 @@ const Tabs = () => {
               <CustomIcon 
                 name='like'
                 size={25}
-                color={focused ? COLORS.primaryOrangeHex: COLORS.primaryLightGreyHex
+                color={focused ? COLORS.primaryOrangeHex: '#fffffd'
                 }
               />
             ),
@@ -67,7 +67,7 @@ const Tabs = () => {
               <CustomIcon 
                 name='bell'
                 size={25}
-                color={focused ? COLORS.primaryOrangeHex: COLORS.primaryLightGreyHex
+                color={focused ? COLORS.primaryOrangeHex: '#fffffd'
                 }
               />
             ),
@@ -81,7 +81,7 @@ const st = StyleSheet.create({
   tarBarStyle:{
     height:80,
     position:'absolute',
-    backgroundColor: COLORS.primaryBlackRGBA,
+    backgroundColor: '#dddddd',
     borderTopWidth:0,
     elevation:0,
     borderTopColor:'transparent',
