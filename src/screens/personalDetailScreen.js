@@ -4,23 +4,23 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomIcon from '../components/CustomIcon';
 import { COLORS } from '../theme/theme';
 
-const PersonalScreen = ({navigation}) => {
+const PersonalScreen = (props) => {
   return (
     <SafeAreaView style={{flex:1}}>
       <ScrollView style={{backgroundColor:'white'}}>
-      <TouchableOpacity onPress={() => navigation.navigate('Menu')}>
-            <CustomIcon style={{ flex: 1, position: 'relative', margin: 10 }} name='menu' color={COLORS.primaryOrangeHex} size={25} />
+      <View style={{ flexDirection: 'row',paddingHorizontal: 10,paddingTop: 20, }}>
+        <TouchableOpacity style={{ justifyContent: 'center', marginBottom: 10 }} onPress={() => props.navigation.navigate('Menu')}>
+          <CustomIcon style={{ alignItems: 'center' }} name='menu' color={COLORS.primaryOrangeHex} size={25} />
         </TouchableOpacity>
-      <Text style={{ flex: 1,fontWeight:'bold', textAlign:'center',margin:5,fontSize:25, color:COLORS.primaryOrangeHex}}>Thông tin</Text>
+        <Text style={{ color: 'black', fontSize: 20, marginLeft: 10, fontWeight: 'bold' }}>Thông tin giao hàng</Text>
+      </View>
 
         <Image
         style={{ width:200,height:200, alignSelf: 'center', margin:20 }}
         source={require('../img/avata.png')}
       />
       
-      <TextInput style={st.txtInput} placeholder='Nhập họ tên' />
-      <TextInput style={st.txtInput} placeholder='Nhập địa chỉ Email' />
-      
+      <TextInput style={st.txtInput} placeholder='Nhập họ tên' />      
       <TextInput style={st.txtInput} placeholder='Nhập số điện thoại' />
       <TextInput style={st.txtInput} placeholder='Nhập địa chỉ' />
       <TouchableOpacity style={st.button}>

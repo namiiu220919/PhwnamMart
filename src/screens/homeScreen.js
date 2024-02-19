@@ -1,7 +1,8 @@
 import React, { Component, useState } from 'react';
-import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View, StyleSheet, TextInput, ImageBackground, ActivityIndicator, FlatList, Modal, Button,ToastAndroid } from 'react-native';
+import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View, StyleSheet, TextInput, ImageBackground, ActivityIndicator, FlatList, Modal, Button, ToastAndroid } from 'react-native';
 import CustomIcon from '../components/CustomIcon';
 import { COLORS } from '../theme/theme';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const HomeScreen = (props) => {
 
@@ -50,72 +51,30 @@ const HomeScreen = (props) => {
         setnameProd(item.name);
         setdviProd(item.dvi);
         setpriceProd(item.price);
+        setfavor(item.favor);
         setdescription(item.description);
     };
 
-    // const addToCart = async () => {
-    //     const item = {
-    //         idProd: idProd,
-    //         image: imgProd,
-    //         name: nameProd,
-    //         price: priceProd,
-    //         dvi: dviProd,
-    //         quantity: 1
-    //         //'https://65baf1bfb4d53c066553b8a3.mockapi.io/carts'
-    //     };
-
-    //     fetch('https://65baf1bfb4d53c066553b8a3.mockapi.io/carts', {
-    //         method: 'POST',
-    //         headers: {
-    //             Accept: 'application/json',
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify(item),
-    //     })
-    //         .then((res) => {
-    //             if (res.status == 201)
-    //                 // console.log('Thêm thành công'); 
-    //                 console.log(item);
-    //         })
-    //         .catch((ex) => {
-    //             console.log(ex);
-    //         });
-
-    // };
     const addToFavor = async () => {
-        const url = `https://65baf1bfb4d53c066553b8a3.mockapi.io/products/`; // Đường dẫn đến sản phẩm cụ thể
-        const requestBody = {
-            id: idProd,
-            favourite: true // Sử dụng boolean true thay vì chuỗi 'true'
-        };
-        
-        try {
-            // Gửi yêu cầu cập nhật trạng thái yêu thích của sản phẩm
-            const response = await fetch(url, {
-                method: 'PUT', // Hoặc có thể sử dụng 'PATCH' nếu chỉ muốn cập nhật một phần của dữ liệu
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(requestBody),
-            });
-    
-            if (response.ok) {
-                console.log('Sửa dữ liệu thành công');
-                // Hiển thị thông báo cho người dùng
-                ToastAndroid.show('Đã sửa dữ liệu thành công', ToastAndroid.SHORT);
-            } else {
-                console.error('Lỗi khi sửa dữ liệu:', response.statusText);
-                // Hiển thị thông báo lỗi cho người dùng nếu có lỗi xảy ra
-                ToastAndroid.show('Đã xảy ra lỗi khi sửa dữ liệu', ToastAndroid.SHORT);
+        fetch(`https://65baf1bfb4d53c066553b8a3.mockapi.io/products/${idProd}`, {
+        // fetch(`http://192.168.0.105:3000/products/${idProd}`, {
+            method: 'PUT', // or PATCH
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ favourite: true })
+        }).then(res => {
+            if (res.ok) {
+                return res.json();
             }
-        } catch (error) {
-            console.error('Lỗi khi sửa dữ liệu:', error);
-            // Hiển thị thông báo lỗi cho người dùng nếu có lỗi xảy ra
-            ToastAndroid.show('Đã xảy ra lỗi khi sửa dữ liệu', ToastAndroid.SHORT);
-        }
+            // handle error
+        }).then(task => {
+            // Do something with updated task
+            console.log('Thành công');
+            setfavor(true);
+        }).catch(error => {
+            // handle error
+            console.log(error);
+        })
     };
-    
 
     const addToCart = async () => {
         const item = {
@@ -224,7 +183,6 @@ const HomeScreen = (props) => {
                                         <Text style={styles.productName}>{item.name}</Text>
                                         <Text style={styles.productNum}>Đơn vị: {item.dvi}</Text>
                                         <Text style={styles.productPrice}>{item.price}đ</Text>
-                                        <CustomIcon style={{ flex: 1, position: 'absolute', margin: 10 }} name='like' size={25} color={'#f1eff2'} />
                                         <TouchableOpacity
                                             style={{ marginTop: 10, height: 25, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.primaryOrangeHex, borderRadius: 5 }}
                                             onPress={() => {
@@ -261,7 +219,6 @@ const HomeScreen = (props) => {
                                         <Text style={styles.productName}>{item.name}</Text>
                                         <Text style={styles.productNum}>Đơn vị: {item.dvi}</Text>
                                         <Text style={styles.productPrice}>{item.price}đ</Text>
-                                        <CustomIcon style={{ flex: 1, position: 'absolute', margin: 10 }} name='like' size={25} color={'#f1eff2'} />
                                         <TouchableOpacity
                                             style={{ marginTop: 10, height: 25, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.primaryOrangeHex, borderRadius: 5 }}
                                             onPress={() => {
@@ -298,7 +255,6 @@ const HomeScreen = (props) => {
                                         <Text style={styles.productName}>{item.name}</Text>
                                         <Text style={styles.productNum}>Đơn vị: {item.dvi}</Text>
                                         <Text style={styles.productPrice}>{item.price}đ</Text>
-                                        <CustomIcon style={{ flex: 1, position: 'absolute', margin: 10 }} name='like' size={25} color={'#f1eff2'} />
                                         <TouchableOpacity
                                             style={{ marginTop: 10, height: 25, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.primaryOrangeHex, borderRadius: 5 }}
                                             onPress={() => {
@@ -322,23 +278,36 @@ const HomeScreen = (props) => {
                 transparent={true}
                 visible={modalVisible}
                 onRequestClose={() => {
-                    setmodalVisible(!modalVisible);
+                    setmodalVisible(false);
                 }}
             >
                 <SafeAreaView>
                     <ScrollView>
                         <View style={{ backgroundColor: 'white', flex: 1, width: '100%', padding: 16 }}>
-                            <Text style={{ fontWeight: 'bold', fontSize: 24, padding: 10, marginBottom: 10, textAlign: 'center', color: 'black' }}>Chi tiết sản phẩm</Text>
+                            <View style={{flexDirection:'row'}}>
+                            <TouchableOpacity onPress={() => setmodalVisible(false)}>
+                            <Icon style={{alignItems:'center'}} 
+                                name="angle-left" 
+                                size={30} 
+                                color= {COLORS.primaryOrangeHex} 
+                                  
+                            />
+                            </TouchableOpacity>
+                            <Text style={{ fontWeight: 'bold', fontSize: 20,marginLeft:20,  marginBottom: 10, textAlign: 'center', color: 'black' }}>Chi tiết sản phẩm</Text>
+                            </View>
                             <View style={{ flex: 1.5, alignItems: 'center', backgroundColor: 'white' }}>
                                 <Image source={{ uri: imgProd }} style={{ width: '70%', height: 250 }} />
                             </View>
 
-                            <View style={{ flex: 3, marginTop: 20,  }}>
-                                <View style={{ backgroundColor: '#EFEDED', padding:10, borderRadius:5, }}>
+                            <View style={{ flex: 3, marginTop: 20, }}>
+                                <View style={{ backgroundColor: '#EFEDED', padding: 10, borderRadius: 5, }}>
                                     <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 16, marginTop: 5 }}>{nameProd}</Text>
                                     <Text style={{ marginTop: 5 }}>Đơn vị: {dviProd}</Text>
+                                    
                                     <Text style={{ color: 'green', fontWeight: 'bold', fontSize: 19, marginTop: 5 }}>{priceProd} $</Text>
-                                    <TouchableOpacity style={{flex:1, position: 'absolute', marginLeft:330, marginTop:15, zIndex:1 }} onPress={addToFavor}><CustomIcon name='like' size={29} color={'#dddddd'} /></TouchableOpacity>
+                                    <TouchableOpacity style={{ flex: 1, position: 'absolute', marginLeft: 330, marginTop: 15, zIndex: 1 }} onPress={addToFavor}>
+                                        <CustomIcon name='like' size={29} color={favor ? 'red' : '#dddddd'} />
+                                    </TouchableOpacity>
                                     <TouchableOpacity style={{ padding: 1, marginTop: 10, height: 35, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.primaryOrangeHex, borderRadius: 5 }}
                                         onPress={addToCart}><Text style={{ color: 'black' }}>Thêm vào giỏ</Text>
                                     </TouchableOpacity>

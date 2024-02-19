@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, View, Text, Image, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator,ToastAndroid } from 'react-native';
+import { SafeAreaView, Alert, View, Text, Image, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator, ToastAndroid } from 'react-native';
 import { COLORS } from '../theme/theme';
+import CustomIcon from '../components/CustomIcon';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const ProductScreen = (props) => {
 
@@ -29,7 +31,7 @@ const ProductScreen = (props) => {
     return unsubscribe;
   }, [props.navigation]);
 
-  const handleDeleteItem = async (itemId) => {
+  const deleteItem = async (itemId) => {
     const updatedCart = cart.filter((item) => item.id !== itemId);
     setCart(updatedCart);
 
@@ -41,6 +43,28 @@ const ProductScreen = (props) => {
     } catch (error) {
       console.error('Error deleting cart item:', error);
     }
+  };
+
+  
+
+  const handleDeleteItem = (itemId) => {
+    Alert.alert(
+      "Xác nhận",
+      "Bạn có chắc chắn muốn xoá?",
+      [
+        {
+          text: "Huỷ",
+          onPress: () => console.log("Huỷ"),
+          style: "cancel"
+        },
+        {
+          text: "Xoá",
+          onPress: () => {
+            deleteItem(itemId); // Truyền ID của sản phẩm vào hàm xoá
+          }
+        }
+      ]
+    );
   };
 
   const updateQuantity = async (itemId, newQuantity) => {
@@ -68,20 +92,64 @@ const ProductScreen = (props) => {
   };
 
   const handlePayment = async () => {
-    // Thực hiện xử lý thanh toán ở đây (ví dụ: gửi yêu cầu thanh toán đến server)
-
-    // Hiển thị thông báo thanh toán thành công
-    setPaymentSuccess(true);
-
-    // Xóa giỏ hàng
-    setCart([]);
-
-    // Hiển thị thông báo
-    ToastAndroid.show('Thanh toán thành công!', ToastAndroid.SHORT);
+    if (cart.length === 0) {
+      ToastAndroid.show('Giỏ hàng của bạn đang trống!', ToastAndroid.SHORT);
+      return;
+    }
+  
+    try {
+      const totalPrice = calculateTotalPrice(cart);
+      
+      const products = cart.map(item => ({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity,
+      }));
+      
+      const response = await fetch(`https://65d02e84ab7beba3d5e2daa0.mockapi.io/orders`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ products, totalPrice }),
+      });
+      
+      const data = await response.json();
+      console.log('Order created successfully:', data);
+      
+      setPaymentSuccess(true);
+      setCart([]);
+      ToastAndroid.show('Thanh toán thành công!', ToastAndroid.SHORT);
+      
+      // Sau khi thanh toán thành công, cập nhật giỏ hàng trên server
+  
+      const response1 = await fetch(`https://65baf1bfb4d53c066553b8a3.mockapi.io/carts`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify([]),
+      });
+      
+      const data1 = await response1.json();
+      console.log('Cart cleared on server successfully');
+    } catch (error) {
+      console.error('Error creating order:', error);
+      ToastAndroid.show('Đã xảy ra lỗi khi thanh toán!', ToastAndroid.SHORT);
+    }
   };
+  
+  
 
   return (
     <SafeAreaView style={{ flex: 1, margin: 10 }}>
+      <View style={{ flexDirection: 'row', }}>
+        <TouchableOpacity style={{ justifyContent: 'center' }} onPress={() => props.navigation.navigate('Menu')}>
+          <CustomIcon style={{}} name='menu' color={COLORS.primaryOrangeHex} size={25} />
+        </TouchableOpacity>
+        <Text style={{ color: 'black', fontSize: 20, padding: 10, textAlign: 'center', fontWeight: 'bold' }}>Giỏ hàng</Text>
+      </View>
       <View style={{ flex: 1 }}>
         {isLoading ? (
           <ActivityIndicator />
@@ -144,7 +212,11 @@ const CartItem = ({ item, updateQuantity, handleDeleteItem }) => {
           </TouchableOpacity>
         </View>
         <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
-          <Text style={styles.deleteButtonText}>Xoá</Text>
+          <Icon style={{ alignItems: 'center' }}
+            name="trash-o"
+            size={30}
+            color={COLORS.primaryOrangeHex}
+          />
         </TouchableOpacity>
       </View>
     </View>
@@ -176,7 +248,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   info: {
-    width: '50%',
+    width: '100%',
     padding: 10,
   },
   productName: {
@@ -205,7 +277,7 @@ const styles = StyleSheet.create({
   },
   quantityButtonText: {
     fontSize: 20,
-    color:'black',
+    color: 'black',
   },
   quantityText: {
     marginHorizontal: 10,
@@ -214,10 +286,10 @@ const styles = StyleSheet.create({
   },
   footer: {
     paddingHorizontal: 10,
-    padding:10,
-    borderRadius:5,
-    backgroundColor:COLORS.primaryOrangeHex,
-    marginBottom:80
+    padding: 10,
+    borderRadius: 5,
+    backgroundColor: COLORS.primaryOrangeHex,
+    marginBottom: 80
   },
   totalPriceContainer: {
     flexDirection: 'row',
@@ -235,7 +307,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#ffffff',
     borderRadius: 5,
-    
+
   },
   paymentButtonText: {
     color: 'black',
@@ -255,6 +327,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
+  deleteButton: {
+    position: 'absolute',
+    marginLeft: 195,
+    marginTop: 50
+  }
 });
 
 export default ProductScreen;
